@@ -381,7 +381,6 @@ namespace ERP_GMEDINA.Controllers
                                 item.depto_Id,
                                 cAreas.area_Id,
                                 item.car_Descripcion,
-                                item.depto_Descripcion,
                                 Usuario.usu_Id,
                                 DateTime.Now);
                             string mensajeDB = "";

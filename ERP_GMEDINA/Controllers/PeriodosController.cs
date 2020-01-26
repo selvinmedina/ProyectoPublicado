@@ -27,7 +27,7 @@ namespace ERP_GMEDINA.Controllers
         {
             // evitar referencias circulares
             db.Configuration.ProxyCreationEnabled = false;
-            
+
             // obtener data para refrescar datatable
             var tbPeriodos = db.tbPeriodos
                 .Select(c => new {
@@ -56,7 +56,7 @@ namespace ERP_GMEDINA.Controllers
             tbPeriodos.peri_UsuarioCrea = 1;
             tbPeriodos.peri_FechaCrea = DateTime.Now;
             tbPeriodos.peri_Activo = true;
-            
+
             // variables de resultado
             string response = "bien";
             IEnumerable<object> listPeriodo = null;
@@ -70,8 +70,10 @@ namespace ERP_GMEDINA.Controllers
                     // ejecutar PA
                     listPeriodo = db.UDP_Plani_tbPeriodos_Insert(tbPeriodos.peri_DescripPeriodo,
                                                                             tbPeriodos.peri_UsuarioCrea,
-                                                                            tbPeriodos.peri_FechaCrea);
-                    
+                                                                            tbPeriodos.peri_FechaCrea,
+                                                                            true,
+                                                                            1);
+
                     // obtener resultado del PA
                     foreach (UDP_Plani_tbPeriodos_Insert_Result resultado in listPeriodo)
                         MessageError = Convert.ToString(resultado);
@@ -136,12 +138,12 @@ namespace ERP_GMEDINA.Controllers
             tbPeriodos.peri_UsuarioModifica = 1;
             tbPeriodos.peri_FechaModifica = DateTime.Now;
             tbPeriodos.peri_Activo = true;
-            
+
             // variables de resultado
             string response = "bien";
             IEnumerable<object> listPeriodo = null;
             String MessageError = "";
-            
+
             // validar si el modelo es válido
             if (ModelState.IsValid)
             {
@@ -151,8 +153,10 @@ namespace ERP_GMEDINA.Controllers
                     listPeriodo = db.UDP_Plani_tbPeriodos_Update(tbPeriodos.peri_IdPeriodo,
                                                                     tbPeriodos.peri_DescripPeriodo,
                                                                     tbPeriodos.peri_UsuarioModifica,
-                                                                    tbPeriodos.peri_FechaModifica);
-                    
+                                                                    tbPeriodos.peri_FechaModifica,
+                                                                    true,
+                                                                    1);
+
                     // obtener resultado del PA
                     foreach (UDP_Plani_tbPeriodos_Update_Result resultado in listPeriodo)
                         MessageError = Convert.ToString(resultado);
@@ -220,7 +224,7 @@ namespace ERP_GMEDINA.Controllers
         public ActionResult Inactivar(int? id)
         {
             // validar si se recibió el id 
-            if(id == null)
+            if (id == null)
             {
                 return Json("Error", JsonRequestBehavior.AllowGet);
             }
@@ -232,12 +236,12 @@ namespace ERP_GMEDINA.Controllers
 
             // instancia del objeto
             tbPeriodos tbPeriodos = new tbPeriodos();
-            
+
             // data del objeto
             tbPeriodos.peri_IdPeriodo = (int)id;
             tbPeriodos.peri_UsuarioModifica = 1;
             tbPeriodos.peri_FechaModifica = DateTime.Now;
-            
+
             // validar que el id sea válido
             if (tbPeriodos.peri_IdPeriodo > 0)
             {
@@ -293,15 +297,15 @@ namespace ERP_GMEDINA.Controllers
                 response = "error";
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
-            
+
             // instancias del objeto
             tbPeriodos tbPeriodos = new tbPeriodos();
-            
+
             // data del objeto
             tbPeriodos.peri_IdPeriodo = (int)id;
             tbPeriodos.peri_UsuarioModifica = 1;
             tbPeriodos.peri_FechaModifica = DateTime.Now;
-            
+
             // validar si el ID es válido
             if (tbPeriodos.peri_IdPeriodo > 0)
             {
